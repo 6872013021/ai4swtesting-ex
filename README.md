@@ -1,97 +1,99 @@
 # ai4swtesting-ex
 
-🌐 **English** | [ภาษาไทย](README.th.md)
+🌐 [English](README.md) | **ภาษาไทย**
 
-Hands-on exercises for the **AI for Software Testing** lecture
-(2110724 Software Testing and Quality Assurance).
+แบบฝึกหัดลงมือปฏิบัติสำหรับการบรรยายเรื่อง **AI for Software Testing**
+(วิชา 2110724 Software Testing and Quality Assurance)
 
-The activities follow the book *Software Testing with Generative AI* (Mark Winteringham, Manning).
-We will work through the book's activities one by one.
+กิจกรรมทั้งหมดอ้างอิงจากหนังสือ *Software Testing with Generative AI* (Mark Winteringham, Manning)
+เราจะทำกิจกรรมในหนังสือไปทีละข้อ
 
-## Before you start: fork this repo
+## ก่อนเริ่ม: fork repo นี้
 
-You **must fork this repository** to your own GitHub account before doing any activity. You will do all your work in your fork.
+นิสิต**ต้อง fork repository นี้**ไปยังบัญชี GitHub ของตัวเองก่อนทำกิจกรรมใด ๆ และทำงานทั้งหมดใน fork ของตัวเอง
 
-1. Sign in to [GitHub](https://github.com). If you don't have an account, create one for free.
-2. Click the **Fork** button at the top right of this page, then click **Create fork**.
-3. Work on the files **in your fork** (`https://github.com/<your-username>/ai4swtesting-ex`), not in this original repo. You can do this in either of two ways:
-   - **In the browser:** open a file in your fork, click the ✏️ (**Edit**) icon, make your changes, then click **Commit changes**.
-   - **On your computer:** clone your fork, edit the files, then commit and push:
+1. เข้าสู่ระบบ [GitHub](https://github.com) (ถ้ายังไม่มีบัญชี สมัครได้ฟรี)
+2. กดปุ่ม **Fork** ที่มุมขวาบนของหน้านี้ แล้วกด **Create fork**
+3. แก้ไขไฟล์**ใน fork ของตัวเอง** (`https://github.com/<your-username>/ai4swtesting-ex`) ไม่ใช่ใน repo ต้นฉบับนี้ ทำได้ 2 วิธี:
+   - **ผ่านเบราว์เซอร์:** เปิดไฟล์ใน fork ของตัวเอง กดไอคอน ✏️ (**Edit**) แก้ไขไฟล์ แล้วกด **Commit changes**
+   - **บนเครื่องคอมพิวเตอร์:** clone fork ของตัวเอง แก้ไขไฟล์ แล้ว commit และ push:
      ```bash
      git clone https://github.com/<your-username>/ai4swtesting-ex.git
      ```
-4. **Submit the URL of your fork** (`https://github.com/<your-username>/ai4swtesting-ex`) **on MyCourseVille.** Make sure all your work is committed (and pushed, if you work on your computer) to your fork.
+4. **ส่ง URL ของ fork ตัวเอง** (`https://github.com/<your-username>/ai4swtesting-ex`) **ใน MyCourseVille** และตรวจสอบให้แน่ใจว่างานทั้งหมด commit (และ push ถ้าทำบนเครื่องคอมพิวเตอร์) ไว้ใน fork ของตัวเองแล้ว
 
-## Activities
+## รายการกิจกรรม
 
-| # | Activity |
-|---|----------|
-| 1 | [Your first prompts: vague vs. specific](#activity-1--your-first-prompts-vague-vs-specific) |
-| 2 | [Delimiters: separate rules from data](#activity-2--delimiters-separate-rules-from-data) |
-| 3 | [Structured output: ask for a format, then convert it](#activity-3--structured-output-ask-for-a-format-then-convert-it) |
-| 4 | [Check for assumptions: give the LLM a way out](#activity-4--check-for-assumptions-give-the-llm-a-way-out) |
-| 5 | [Few-shot prompting: show, don't just tell](#activity-5--few-shot-prompting-show-dont-just-tell) |
-| 6 | [Specify the steps: break a complex task down](#activity-6--specify-the-steps-break-a-complex-task-down) |
-| 7 | [Check before answering: let the LLM review its own solution](#activity-7--check-before-answering-let-the-llm-review-its-own-solution) |
+| # | กิจกรรม |
+|---|---------|
+| 1 | [Prompt แรกของเรา: แบบกว้าง ๆ vs. แบบเจาะจง](#กิจกรรม-1--prompt-แรกของเรา-แบบกว้าง-ๆ-vs-แบบเจาะจง) |
+| 2 | [Delimiters: แยกกฎออกจากข้อมูล](#กิจกรรม-2--delimiters-แยกกฎออกจากข้อมูล) |
+| 3 | [Structured output: ระบุรูปแบบ แล้วแปลงเป็นรูปแบบอื่น](#กิจกรรม-3--structured-output-ระบุรูปแบบ-แล้วแปลงเป็นรูปแบบอื่น) |
+| 4 | [ตรวจสอบสมมติฐาน: เปิดทางออกให้ LLM](#กิจกรรม-4--ตรวจสอบสมมติฐาน-เปิดทางออกให้-llm) |
+| 5 | [Few-shot prompting: ให้ตัวอย่าง ไม่ใช่แค่บอก](#กิจกรรม-5--few-shot-prompting-ให้ตัวอย่าง-ไม่ใช่แค่บอก) |
+| 6 | [ระบุขั้นตอน: แตกงานที่ซับซ้อนเป็นงานย่อย](#กิจกรรม-6--ระบุขั้นตอน-แตกงานที่ซับซ้อนเป็นงานย่อย) |
+| 7 | [ตรวจก่อนตอบ: ให้ LLM ทบทวนคำตอบของตัวเอง](#กิจกรรม-7--ตรวจก่อนตอบ-ให้-llm-ทบทวนคำตอบของตัวเอง) |
 
 ---
 
-## Activity 1 – Your first prompts: vague vs. specific
+## กิจกรรม 1 – Prompt แรกของเรา: แบบกว้าง ๆ vs. แบบเจาะจง
 
-### Goals
+### เป้าหมาย
 
-By the end of this activity you should be able to:
+เมื่อทำกิจกรรมนี้เสร็จ นิสิตควรจะสามารถ:
 
-- Send a prompt to a large language model (LLM) through its web interface.
-- Explain why an LLM's response is only as detailed or as generic as the prompt it is given (*garbage in, garbage out*).
-- Read LLM output critically, spotting answers that are wrong, made up, or too vague to use.
+- ส่ง prompt ไปยัง Large Language Model (LLM) ผ่านหน้าเว็บได้
+- อธิบายได้ว่าทำไมคำตอบของ LLM จะละเอียดหรือกว้าง ๆ ก็ขึ้นอยู่กับ prompt ที่เราให้ (*garbage in, garbage out*)
+- อ่านคำตอบของ LLM อย่างมีวิจารณญาณ และชี้ได้ว่าส่วนไหนผิด ส่วนไหนถูกแต่งขึ้นมา หรือส่วนไหนกว้างเกินกว่าจะนำไปใช้ได้
 
-### What you need
+### สิ่งที่ต้องเตรียม
 
-- A web browser and a free account on **one** of these generative AI chatbots. Use the web version for this activity; you don't need an API or any code.
+- เว็บเบราว์เซอร์ และบัญชี (ฟรี) ของ Generative AI chatbot **ตัวใดตัวหนึ่ง** ต่อไปนี้ กิจกรรมนี้ให้ใช้ผ่านหน้าเว็บ ไม่ต้องใช้ API และไม่ต้องเขียนโค้ด
   - ChatGPT – <https://chatgpt.com>
   - Google Gemini – <https://gemini.google.com>
   - Claude – <https://claude.ai>
   - Microsoft Copilot – <https://copilot.microsoft.com>
-- About 30 minutes.
+- เวลาประมาณ 30 นาที
 
-### Step 0 – Get started with the chatbot
+### ขั้นที่ 0 – เริ่มต้นใช้งาน chatbot
 
-1. Open the chatbot's website and sign in.
-2. Start a **new chat** for each step below. This stops earlier messages from influencing the answer.
-3. Type (or paste) the prompt into the message box and press **Enter**.
-4. Save each response to a Markdown file, as described in each step below. You will compare them later.
+1. เปิดเว็บไซต์ของ chatbot แล้วเข้าสู่ระบบ
+2. เปิด **แชตใหม่ (New chat)** ทุกครั้งที่เริ่มแต่ละขั้นด้านล่าง เพื่อไม่ให้ข้อความก่อนหน้ามีผลต่อคำตอบ
+3. พิมพ์หรือวาง prompt ลงในช่องข้อความ แล้วกด **Enter**
+4. บันทึกคำตอบแต่ละครั้งลงไฟล์ Markdown ตามที่อธิบายไว้ในแต่ละขั้นด้านล่าง เพราะต้องนำมาเปรียบเทียบในภายหลัง
 
-> 💡 Tip: If the chatbot can search the web, turn web search **off** for this activity so you see what the model produces on its own.
+> 💡 เคล็ดลับ: ถ้า chatbot ที่ใช้มีฟังก์ชันค้นหาเว็บ (web search) ให้**ปิด**ไว้ก่อน เพื่อให้เห็นคำตอบที่โมเดลสร้างขึ้นเองล้วน ๆ
 
-### Step 1 – A vague prompt
+> 📝 หมายเหตุ: ให้ใช้ prompt **ภาษาอังกฤษตามที่ให้ไว้**
 
-In a **new chat**, send this one-line prompt:
+### ขั้นที่ 1 – Prompt แบบกว้าง ๆ
+
+เปิด **แชตใหม่** แล้วส่ง prompt สั้น ๆ บรรทัดเดียวนี้:
 
 ```text
 Create tests for a file upload feature
 ```
 
-**Save the response** in the template file [`a1-1.md`](a1-1.md), which already contains the prompt:
+**บันทึกคำตอบ** ลงในไฟล์ template [`a1-1.md`](a1-1.md) ที่มี prompt ใส่ไว้ให้แล้ว:
 
-1. Click the chatbot's **Copy** button under the response (usually a 📋 icon). This copies the full answer, with its formatting, as Markdown.
-2. Open [`a1-1.md`](a1-1.md) **in your fork**, fill in the chatbot/model you used, and paste the response under **## Response**.
-3. Paste the **whole** response. Don't edit, shorten or summarize it.
+1. กดปุ่ม **Copy** ใต้คำตอบของ chatbot (มักเป็นไอคอน 📋) ซึ่งจะคัดลอกคำตอบทั้งหมดพร้อมรูปแบบในรูปของ Markdown
+2. เปิดไฟล์ [`a1-1.md`](a1-1.md) **ใน fork ของตัวเอง** ระบุชื่อ chatbot/model ที่ใช้ แล้ววางคำตอบไว้ใต้หัวข้อ **## Response**
+3. วางคำตอบให้**ครบทั้งหมด** ห้ามแก้ไข ตัดทอน หรือสรุปเอง
 
-### Step 2 – A specific prompt with context
+### ขั้นที่ 2 – Prompt แบบเจาะจงและมีบริบท
 
-The feature we actually want to test is described by this user story:
+ฟีเจอร์ที่เราต้องการทดสอบจริง ๆ อธิบายไว้ใน user story นี้:
 
-> As a paralegal, in order to store and share legal documents, I want to be able to securely upload documents.
+> ในฐานะผู้ช่วยทนายความ (paralegal) ฉันต้องการอัปโหลดเอกสารได้อย่างปลอดภัย เพื่อจัดเก็บและแชร์เอกสารทางกฎหมาย
 >
-> **Acceptance criteria:**
-> - Upload should support the following common file formats: PDF, DOCX, TXT
-> - The maximum file size should be 20MB
-> - When a document is uploaded it should give a progress update to the user
-> - Once uploaded, the document must initially be only accessible to the person who has uploaded it
-> - A report of the upload and whether it was successful or not will be stored in the auditing feature
+> **เกณฑ์การยอมรับ (Acceptance criteria):**
+> - รองรับไฟล์รูปแบบ PDF, DOCX และ TXT
+> - ขนาดไฟล์สูงสุด 20MB
+> - ระหว่างอัปโหลด ระบบต้องแสดงความคืบหน้าให้ผู้ใช้เห็น
+> - เมื่ออัปโหลดเสร็จ ในช่วงแรกเอกสารต้องเข้าถึงได้เฉพาะผู้ที่อัปโหลดเท่านั้น
+> - ระบบต้องบันทึกรายงานการอัปโหลดและผลว่าสำเร็จหรือไม่ไว้ในฟีเจอร์ auditing
 
-In a **new chat**, send this prompt:
+เปิด **แชตใหม่** แล้วส่ง prompt นี้ (ภาษาอังกฤษ):
 
 ```text
 Act as a professional software tester and suggest test ideas for the feature delimited by three hashes. All test ideas should be focused on discovering risks that impact the quality characteristics: Functionality, Data Integrity and Security
@@ -106,39 +108,39 @@ Act as a professional software tester and suggest test ideas for the feature del
 ###
 ```
 
-**Save the response** in the template file [`a1-2.md`](a1-2.md), which already contains the prompt:
+**บันทึกคำตอบ** ลงในไฟล์ template [`a1-2.md`](a1-2.md) ที่มี prompt ใส่ไว้ให้แล้ว:
 
-1. Click the chatbot's **Copy** button under the response (usually a 📋 icon). This copies the full answer, with its formatting, as Markdown.
-2. Open [`a1-2.md`](a1-2.md) **in your fork**, fill in the chatbot/model you used, and paste the response under **## Response**.
-3. Paste the **whole** response. Don't edit, shorten or summarize it.
+1. กดปุ่ม **Copy** ใต้คำตอบของ chatbot (มักเป็นไอคอน 📋) ซึ่งจะคัดลอกคำตอบทั้งหมดพร้อมรูปแบบในรูปของ Markdown
+2. เปิดไฟล์ [`a1-2.md`](a1-2.md) **ใน fork ของตัวเอง** ระบุชื่อ chatbot/model ที่ใช้ แล้ววางคำตอบไว้ใต้หัวข้อ **## Response**
+3. วางคำตอบให้**ครบทั้งหมด** ห้ามแก้ไข ตัดทอน หรือสรุปเอง
 
-### Step 3 – Compare and reflect
+### ขั้นที่ 3 – เปรียบเทียบและสะท้อนคิด
 
-Compare the two responses in `a1-1.md` and `a1-2.md`, and reflect on how the prompt changed what the LLM gave you. You don't need to write or submit any answers for this step.
+เปรียบเทียบคำตอบทั้งสองในไฟล์ `a1-1.md` และ `a1-2.md` แล้วลองสะท้อนคิดว่า prompt ที่ต่างกันทำให้คำตอบของ LLM ต่างกันอย่างไร ขั้นนี้ไม่ต้องเขียนหรือส่งคำตอบ
 
-Some things to think about:
+ประเด็นที่ควรลองคิด:
 
-- How do the two responses differ? Which one could you actually use to test the feature?
-- Does the response to the vague prompt include anything that doesn't match the user story, or expected outcomes too vague to judge as pass or fail?
-- Even with the better prompt, is anything still missing or wrong?
+- คำตอบทั้งสองต่างกันอย่างไร คำตอบไหนนำไปใช้ทดสอบฟีเจอร์นี้ได้จริงมากกว่ากัน
+- คำตอบจาก prompt แบบกว้าง ๆ มีส่วนที่ไม่ตรงกับ user story หรือมี expected outcome ที่กว้างเกินไปจนตัดสินไม่ได้ว่า pass หรือ fail หรือไม่
+- แม้จะใช้ prompt ที่ดีขึ้นแล้ว ยังมีอะไรขาดหรือผิดอยู่ไหม
 
-### Key takeaways
+### ข้อคิดสำคัญ
 
-- **Garbage in, garbage out:** a vague prompt gives a generic answer, and a clear prompt with context gives a focused, useful one.
-- **Stay skeptical:** LLMs always produce an answer that sounds confident, even when it is made up.
-- **You lead the testing:** the LLM extends what you can do, but your knowledge of the product and your test design skills decide what is valuable.
+- **Garbage in, garbage out:** prompt ที่กว้าง ๆ จะได้คำตอบกว้าง ๆ ส่วน prompt ที่ชัดเจนและมีบริบทจะได้คำตอบที่ตรงประเด็นและนำไปใช้ได้จริง
+- **อย่าเชื่อทันที:** LLM ตอบได้เสมอด้วยน้ำเสียงที่มั่นใจ แม้คำตอบนั้นจะเป็นเรื่องที่แต่งขึ้นมาก็ตาม
+- **เราเป็นผู้นำการทดสอบ:** LLM ช่วยขยายขีดความสามารถของเรา แต่ความรู้เรื่องระบบและทักษะการออกแบบ test ของเราเป็นตัวตัดสินว่าอะไรมีคุณค่า
 
 ---
 
-## Activity 2 – Delimiters: separate rules from data
+## กิจกรรม 2 – Delimiters: แยกกฎออกจากข้อมูล
 
-**Delimiters** are characters such as `###`, `*`, `#`, `%` and `|` that mark which part of a prompt is an instruction and which part is data. They make a prompt clearer to the LLM and easier for you to change.
+**Delimiter** คือตัวอักษรอย่าง `###`, `*`, `#`, `%` และ `|` ที่ใช้บอกว่าส่วนไหนของ prompt เป็นคำสั่ง และส่วนไหนเป็นข้อมูล ช่วยให้ LLM เข้าใจ prompt ได้ชัดขึ้น และให้เราแก้ไข prompt ได้ง่ายขึ้น
 
-Use the same chatbot setup as in [Activity 1, Step 0](#step-0--get-started-with-the-chatbot): a **new chat** for each step, and save each **whole** response in the template file **in your fork** (fill in the chatbot/model and paste the response under **## Response**).
+ใช้ chatbot แบบเดียวกับใน[กิจกรรม 1 ขั้นที่ 0](#ขั้นที่-0--เริ่มต้นใช้งาน-chatbot): เปิด**แชตใหม่**ทุกขั้น และบันทึกคำตอบให้**ครบทั้งหมด**ลงไฟล์ template **ใน fork ของตัวเอง** (ระบุชื่อ chatbot/model และวางคำตอบไว้ใต้หัวข้อ **## Response**)
 
-### Step 1 – Try the delimiter prompt
+### ขั้นที่ 1 – ลองใช้ prompt ที่มี delimiter
 
-This prompt sets rules with `*`, then uses `#` for the table name, `%` for each column and `|` to separate each column's name, data type and data options. In a **new chat**, send it and save the response in [`a2-1.md`](a2-1.md):
+prompt นี้ใช้ `*` กำหนดกฎ แล้วใช้ `#` บอกชื่อตาราง `%` บอกแต่ละคอลัมน์ และ `|` คั่นชื่อคอลัมน์ ชนิดข้อมูล และตัวเลือกของข้อมูล เปิด**แชตใหม่** ส่ง prompt นี้ แล้วบันทึกคำตอบลงไฟล์ [`a2-1.md`](a2-1.md):
 
 ```text
 You are a SQL data generator. Generate five rows of SQL for a MySQL database.
@@ -158,69 +160,69 @@ Here are the instructions:
 % roomPrice | integer | 100 to 200
 ```
 
-Check the generated SQL against the rules. Is the table name right? Does every column follow its data type and options?
+ตรวจ SQL ที่ได้กับกฎใน prompt ชื่อตารางถูกต้องหรือไม่ ทุกคอลัมน์เป็นไปตามชนิดข้อมูลและตัวเลือกที่กำหนดหรือเปล่า
 
-### Step 2 – Write your own instructions
+### ขั้นที่ 2 – เขียนคำสั่งของตัวเอง
 
-Now write instructions for a **`bookings`** table, using the same delimiter rules. Your table must include:
+คราวนี้ให้เขียนคำสั่งสำหรับตาราง **`bookings`** โดยใช้กฎ delimiter แบบเดิม ตารางต้องมีข้อมูลต่อไปนี้:
 
-- who made the booking
-- their contact details
-- the check-in and check-out dates
+- ผู้จอง
+- ข้อมูลติดต่อของผู้จอง
+- วันเช็กอินและวันเช็กเอาต์
 
-Open [`a2-2.md`](a2-2.md) **in your fork** and replace the `<...>` lines in the prompt with your own columns. For example: `% firstname | string | random`. Then send the **whole** prompt in a **new chat** and paste the response under **## Response**.
+เปิดไฟล์ [`a2-2.md`](a2-2.md) **ใน fork ของตัวเอง** แล้วแทนที่บรรทัด `<...>` ใน prompt ด้วยคอลัมน์ของตัวเอง เช่น `% firstname | string | random` จากนั้นส่ง prompt **ทั้งหมด**ใน**แชตใหม่** แล้ววางคำตอบไว้ใต้หัวข้อ **## Response**
 
-### Step 3 – Reflect
+### ขั้นที่ 3 – สะท้อนคิด
 
-You don't need to write or submit any answers for this step.
+ขั้นนี้ไม่ต้องเขียนหรือส่งคำตอบ
 
-- Did the LLM follow every rule you set? Look for any column that broke its data type or options.
-- Is every check-out date **after** its check-in date? If not, how could you change your instructions to fix it?
-- **Optional:** add one more column line, such as `% room_size | string | 20m2 to 50m2`, and send the prompt again. How easy was it to change?
+- LLM ทำตามกฎที่เรากำหนดครบทุกข้อหรือไม่ มีคอลัมน์ไหนที่ไม่ตรงกับชนิดข้อมูลหรือตัวเลือกที่กำหนดบ้าง
+- วันเช็กเอาต์ทุกแถว**หลัง**วันเช็กอินหรือไม่ ถ้าไม่ จะแก้คำสั่งอย่างไร
+- **(ไม่บังคับ)** เพิ่มคอลัมน์อีก 1 บรรทัด เช่น `% room_size | string | 20m2 to 50m2` แล้วส่ง prompt อีกครั้ง แก้ไขได้ง่ายแค่ไหน
 
 ---
 
-## Activity 3 – Structured output: ask for a format, then convert it
+## กิจกรรม 3 – Structured output: ระบุรูปแบบ แล้วแปลงเป็นรูปแบบอื่น
 
-LLMs can return data in structured formats such as JSON, XML, YAML or CSV, but you have to **say which format you want**. Because the format and the structure are separate instructions, you can keep the same data and switch to another format with one short follow-up prompt.
+LLM สามารถตอบเป็นข้อมูลที่มีโครงสร้าง เช่น JSON, XML, YAML หรือ CSV ได้ แต่เราต้อง**ระบุให้ชัดว่าต้องการรูปแบบไหน** และเพราะรูปแบบกับโครงสร้างเป็นคำสั่งคนละส่วนกัน เราจึงเปลี่ยนรูปแบบได้ด้วย prompt สั้น ๆ เพียงประโยคเดียว โดยข้อมูลยังเหมือนเดิม
 
-Use the same chatbot setup as in [Activity 1, Step 0](#step-0--get-started-with-the-chatbot), and save each response in its template file **in your fork**.
+ใช้ chatbot แบบเดียวกับใน[กิจกรรม 1 ขั้นที่ 0](#ขั้นที่-0--เริ่มต้นใช้งาน-chatbot) และบันทึกคำตอบแต่ละครั้งลงไฟล์ template **ใน fork ของตัวเอง**
 
-### Step 1 – Ask for structured output
+### ขั้นที่ 1 – ขอผลลัพธ์แบบมีโครงสร้าง
 
-This prompt asks for an object with fields of **different data types**: a string, an integer, a boolean, an array and a nested object. In a **new chat**, send it and save the response in [`a3-1.md`](a3-1.md):
+prompt นี้ขอ object ที่มีฟิลด์**หลายชนิดข้อมูล** ได้แก่ string, integer, boolean, array และ object ซ้อนกัน เปิด**แชตใหม่** ส่ง prompt นี้ แล้วบันทึกคำตอบลงไฟล์ [`a3-1.md`](a3-1.md):
 
 ```text
 Create a JSON object with random data for a hotel guest that contains the following fields: fullname (string), age (integer), vip (boolean), email (string), favouriteRooms (array of integers), and an object called address that contains street, city and postcode.
 ```
 
-### Step 2 – Convert to another format
+### ขั้นที่ 2 – แปลงเป็นรูปแบบอื่น
 
-Stay in the **same chat** this time, so the LLM can see the JSON it just made. Send this follow-up prompt and save the response in [`a3-2.md`](a3-2.md):
+ขั้นนี้ให้ส่งใน**แชตเดิม** เพื่อให้ LLM เห็น JSON ที่เพิ่งสร้าง ส่ง prompt นี้ แล้วบันทึกคำตอบลงไฟล์ [`a3-2.md`](a3-2.md):
 
 ```text
 Convert this to XML
 ```
 
-### Step 3 – Reflect
+### ขั้นที่ 3 – สะท้อนคิด
 
-Compare `a3-1.md` and `a3-2.md`. You don't need to write or submit any answers for this step.
+เปรียบเทียบไฟล์ `a3-1.md` และ `a3-2.md` ขั้นนี้ไม่ต้องเขียนหรือส่งคำตอบ
 
-- Is the data exactly the same after the conversion, or did any values change?
-- XML has no built-in booleans, numbers or arrays. How did the LLM represent `vip`, `age` and `favouriteRooms`?
-- **Optional:** in the same chat, ask for YAML or CSV. CSV is a flat table, so what happened to the nested `address` object?
+- ข้อมูลหลังแปลงเหมือนเดิมทุกค่าหรือไม่ มีค่าไหนเปลี่ยนไปบ้าง
+- XML ไม่มีชนิดข้อมูล boolean ตัวเลข หรือ array ในตัว LLM แสดง `vip`, `age` และ `favouriteRooms` อย่างไร
+- **(ไม่บังคับ)** ในแชตเดิม ลองขอเป็น YAML หรือ CSV ซึ่ง CSV เป็นตารางแบน ๆ แล้ว object `address` ที่ซ้อนอยู่กลายเป็นอะไร
 
 ---
 
-## Activity 4 – Check for assumptions: give the LLM a way out
+## กิจกรรม 4 – ตรวจสอบสมมติฐาน: เปิดทางออกให้ LLM
 
-If an LLM can't answer properly, it tends to **guess** rather than say so. In this activity you will see that happen, then stop it by giving the LLM a "way out": an explicit instruction for what to do when it can't answer.
+เมื่อ LLM ตอบไม่ได้จริง ๆ มักจะ**เดา**แทนที่จะบอกตรง ๆ ว่าตอบไม่ได้ ในกิจกรรมนี้นิสิตจะได้เห็นปัญหานี้ แล้วแก้โดยเปิด "ทางออก" ให้ LLM คือบอกให้ชัดว่าถ้าตอบไม่ได้ต้องทำอย่างไร
 
-Use the same chatbot setup as in [Activity 1, Step 0](#step-0--get-started-with-the-chatbot): a **new chat** for each step, and save each **whole** response in the template file **in your fork** (fill in the chatbot/model and paste the response under **## Response**).
+ใช้ chatbot แบบเดียวกับใน[กิจกรรม 1 ขั้นที่ 0](#ขั้นที่-0--เริ่มต้นใช้งาน-chatbot): เปิด**แชตใหม่**ทุกขั้น และบันทึกคำตอบให้**ครบทั้งหมด**ลงไฟล์ template **ใน fork ของตัวเอง** (ระบุชื่อ chatbot/model และวางคำตอบไว้ใต้หัวข้อ **## Response**)
 
-### Step 1 – A filtering prompt
+### ขั้นที่ 1 – Prompt สำหรับคัดกรองข้อมูล
 
-In a **new chat**, send this prompt and save the response in [`a4-1.md`](a4-1.md):
+เปิด**แชตใหม่** ส่ง prompt นี้ แล้วบันทึกคำตอบลงไฟล์ [`a4-1.md`](a4-1.md):
 
 ```text
 You will be given a list of foods delimited by three hashes. Extract all the fruits and write them out as a list.
@@ -229,9 +231,9 @@ apple, bread, banana, cheese, carrot, mango, rice, strawberry, chicken
 ###
 ```
 
-### Step 2 – Add an edge case
+### ขั้นที่ 2 – เพิ่มกรณีขอบ (edge case)
 
-Now the list contains **no fruits**, plus some tricky items. In a **new chat**, send this prompt and save the response in [`a4-2.md`](a4-2.md):
+คราวนี้รายการ**ไม่มีผลไม้เลย** และมีบางรายการที่กำกวม เปิด**แชตใหม่** ส่ง prompt นี้ แล้วบันทึกคำตอบลงไฟล์ [`a4-2.md`](a4-2.md):
 
 ```text
 You will be given a list of foods delimited by three hashes. Extract all the fruits and write them out as a list.
@@ -240,11 +242,11 @@ bread, cheese, carrot, rice, chicken, tomato, strawberry yogurt, fruit cake
 ###
 ```
 
-Look at the response. Did the LLM say there are no fruits, or did it guess? How did it treat `tomato`, `strawberry yogurt` and `fruit cake`?
+ดูคำตอบที่ได้ LLM บอกว่าไม่มีผลไม้ หรือเดาขึ้นมาเอง แล้ว LLM จัดการกับ `tomato`, `strawberry yogurt` และ `fruit cake` อย่างไร
 
-### Step 3 – Give the LLM a way out
+### ขั้นที่ 3 – เปิดทางออกให้ LLM
 
-This prompt adds two instructions that tell the LLM what to do when it can't answer. In a **new chat**, send it and save the response in [`a4-3.md`](a4-3.md):
+prompt นี้เพิ่มคำสั่ง 2 ข้อที่บอก LLM ว่าต้องทำอย่างไรเมื่อตอบไม่ได้ เปิด**แชตใหม่** ส่ง prompt นี้ แล้วบันทึกคำตอบลงไฟล์ [`a4-3.md`](a4-3.md):
 
 ```text
 You will be given a list of foods delimited by three hashes. Extract all the fruits and write them out as a list.
@@ -255,25 +257,25 @@ bread, cheese, carrot, rice, chicken, tomato, strawberry yogurt, fruit cake
 ###
 ```
 
-### Step 4 – Compare and reflect
+### ขั้นที่ 4 – เปรียบเทียบและสะท้อนคิด
 
-Compare `a4-2.md` and `a4-3.md`. You don't need to write or submit any answers for this step.
+เปรียบเทียบไฟล์ `a4-2.md` และ `a4-3.md` ขั้นนี้ไม่ต้องเขียนหรือส่งคำตอบ
 
-- Did the way-out instructions change the answer? Is the new answer more useful?
-- Where could a guessing LLM mislead you in testing work, for example when you ask it to extract data from logs or test results?
-- **Optional:** try the same idea with your own data and edge case, such as missing values or wrongly formatted entries.
+- คำสั่งที่เปิดทางออกทำให้คำตอบเปลี่ยนไปหรือไม่ คำตอบใหม่มีประโยชน์กว่าเดิมหรือเปล่า
+- ในงานทดสอบ LLM ที่ชอบเดาจะทำให้เราเข้าใจผิดได้ตรงไหนบ้าง เช่น เมื่อให้ดึงข้อมูลจาก log หรือผลการทดสอบ
+- **(ไม่บังคับ)** ลองใช้แนวคิดเดียวกันกับข้อมูลและกรณีขอบของตัวเอง เช่น ข้อมูลที่หายไป หรือข้อมูลที่รูปแบบผิด
 
 ---
 
-## Activity 5 – Few-shot prompting: show, don't just tell
+## กิจกรรม 5 – Few-shot prompting: ให้ตัวอย่าง ไม่ใช่แค่บอก
 
-Some formats are hard to describe in words. Giving the LLM a few **examples** of the output you want (*few-shot prompting*) is often clearer than writing more instructions. A prompt with no examples is called *zero-shot*.
+บางรูปแบบอธิบายเป็นคำพูดได้ยาก การให้**ตัวอย่าง**ผลลัพธ์ที่ต้องการกับ LLM สัก 2–3 ตัวอย่าง (*few-shot prompting*) มักชัดเจนกว่าการเขียนคำสั่งเพิ่ม ส่วน prompt ที่ไม่มีตัวอย่างเลยเรียกว่า *zero-shot*
 
-Use the same chatbot setup as in [Activity 1, Step 0](#step-0--get-started-with-the-chatbot): a **new chat** for each step, and save each **whole** response in the template file **in your fork** (fill in the chatbot/model and paste the response under **## Response**).
+ใช้ chatbot แบบเดียวกับใน[กิจกรรม 1 ขั้นที่ 0](#ขั้นที่-0--เริ่มต้นใช้งาน-chatbot): เปิด**แชตใหม่**ทุกขั้น และบันทึกคำตอบให้**ครบทั้งหมด**ลงไฟล์ template **ใน fork ของตัวเอง** (ระบุชื่อ chatbot/model และวางคำตอบไว้ใต้หัวข้อ **## Response**)
 
-### Step 1 – Without examples (zero-shot)
+### ขั้นที่ 1 – ไม่มีตัวอย่าง (zero-shot)
 
-The prompt asks for "our team's test idea format", but never shows what that format is. In a **new chat**, send this prompt and save the response in [`a5-1.md`](a5-1.md):
+prompt นี้ขอให้ใช้ "รูปแบบ test idea ของทีมเรา" แต่ไม่ได้บอกว่ารูปแบบนั้นเป็นอย่างไร เปิด**แชตใหม่** ส่ง prompt นี้ แล้วบันทึกคำตอบลงไฟล์ [`a5-1.md`](a5-1.md):
 
 ```text
 You are a software tester. Write 6 test ideas for the password rules delimited by three hashes. Use our team's test idea format.
@@ -282,9 +284,9 @@ A password must be 8 to 20 characters long and contain at least one digit and on
 ###
 ```
 
-### Step 2 – With examples (few-shot)
+### ขั้นที่ 2 – มีตัวอย่าง (few-shot)
 
-The same prompt, plus two examples. Each one shows the test design technique in brackets (`BVA` = boundary value analysis, `EP` = equivalence partitioning), the input, and the expected result. In a **new chat**, send this prompt and save the response in [`a5-2.md`](a5-2.md):
+prompt เดิม แต่เพิ่มตัวอย่าง 2 ข้อ แต่ละข้อระบุเทคนิคการออกแบบ test ในวงเล็บ (`BVA` = boundary value analysis, `EP` = equivalence partitioning) ข้อมูลที่ใส่ และผลที่คาดหวัง เปิด**แชตใหม่** ส่ง prompt นี้ แล้วบันทึกคำตอบลงไฟล์ [`a5-2.md`](a5-2.md):
 
 ```text
 You are a software tester. Write 6 test ideas for the password rules delimited by three hashes. Use our team's test idea format.
@@ -296,25 +298,25 @@ For example:
 * [EP] no digit ("SecretPass") → rejected
 ```
 
-### Step 3 – Compare and reflect
+### ขั้นที่ 3 – เปรียบเทียบและสะท้อนคิด
 
-Compare `a5-1.md` and `a5-2.md`. You don't need to write or submit any answers for this step.
+เปรียบเทียบไฟล์ `a5-1.md` และ `a5-2.md` ขั้นนี้ไม่ต้องเขียนหรือส่งคำตอบ
 
-- How did the examples change the format and content of the test ideas?
-- Are the test ideas in `a5-2.md` correct? Check each input against the password rules yourself.
-- **Optional:** write your own few-shot prompt for a task you do, with clear instructions and at least two examples.
+- ตัวอย่างทำให้รูปแบบและเนื้อหาของ test idea เปลี่ยนไปอย่างไร
+- test idea ใน `a5-2.md` ถูกต้องหรือไม่ ลองตรวจข้อมูลแต่ละข้อกับกฎของรหัสผ่านด้วยตัวเอง
+- **(ไม่บังคับ)** เขียน few-shot prompt ของตัวเองสำหรับงานที่ทำอยู่ โดยมีคำสั่งที่ชัดเจนและตัวอย่างอย่างน้อย 2 ข้อ
 
 ---
 
-## Activity 6 – Specify the steps: break a complex task down
+## กิจกรรม 6 – ระบุขั้นตอน: แตกงานที่ซับซ้อนเป็นงานย่อย
 
-When a task is complex, an LLM given one big request tends to rush and guess. Breaking the task into **numbered steps** gives the LLM "time to think": it works through each step in order, and each step builds on the one before.
+ถ้างานซับซ้อนแต่สั่ง LLM รวดเดียว LLM มักจะรีบตอบและเดา การแตกงานเป็น**ขั้นตอนที่มีหมายเลข**เป็นการให้ LLM "มีเวลาคิด" คือทำทีละขั้นตามลำดับ และแต่ละขั้นต่อยอดจากขั้นก่อนหน้า
 
-Use the same chatbot setup as in [Activity 1, Step 0](#step-0--get-started-with-the-chatbot). You don't need to save the response for this activity.
+ใช้ chatbot แบบเดียวกับใน[กิจกรรม 1 ขั้นที่ 0](#ขั้นที่-0--เริ่มต้นใช้งาน-chatbot) กิจกรรมนี้ไม่ต้องบันทึกคำตอบ
 
-### Send a prompt with numbered steps
+### ส่ง prompt ที่ระบุขั้นตอน
 
-This prompt breaks the task into four numbered steps, followed by a user story. In a **new chat**, send it:
+prompt นี้แตกงานเป็น 4 ขั้นตอนที่มีหมายเลข ตามด้วย user story เปิด**แชตใหม่** แล้วส่ง prompt นี้:
 
 ```text
 You are going to be given a list of instructions to follow.
@@ -336,17 +338,17 @@ Acceptance criteria:
 
 ---
 
-## Activity 7 – Check before answering: let the LLM review its own solution
+## กิจกรรม 7 – ตรวจก่อนตอบ: ให้ LLM ทบทวนคำตอบของตัวเอง
 
-You can ask an LLM to **check its solution before it replies**, for example against your instructions or a quality you care about. It isn't really evaluating its work the way a person would, but the instruction often steers it towards a better answer.
+เราสั่งให้ LLM **ตรวจคำตอบของตัวเองก่อนตอบ**ได้ เช่น ตรวจกับคำสั่งของเรา หรือกับคุณภาพที่เราต้องการ จริง ๆ แล้ว LLM ไม่ได้ประเมินงานของตัวเองแบบที่คนทำ แต่คำสั่งนี้มักช่วยดึงคำตอบไปในทางที่ดีขึ้น
 
-Use the same chatbot setup as in [Activity 1, Step 0](#step-0--get-started-with-the-chatbot). You don't need to save the response for this activity.
+ใช้ chatbot แบบเดียวกับใน[กิจกรรม 1 ขั้นที่ 0](#ขั้นที่-0--เริ่มต้นใช้งาน-chatbot) กิจกรรมนี้ไม่ต้องบันทึกคำตอบ
 
-The code below gives a discount if the code exists and hasn't expired. Notice two things that make it hard to unit test: it reads from a `CodeRepository` (for example, a database), and it compares the expiry date with **today's date**.
+โค้ดด้านล่างให้ส่วนลดถ้าโค้ดส่วนลดมีอยู่จริงและยังไม่หมดอายุ สังเกต 2 อย่างที่ทำให้เขียน unit test ได้ยาก คือ โค้ดอ่านข้อมูลจาก `CodeRepository` (เช่น ฐานข้อมูล) และเทียบวันหมดอายุกับ**วันที่ปัจจุบัน**
 
-### Ask for tests, checked before the reply
+### ขอ test โดยให้ตรวจก่อนตอบ
 
-The last sentence of the instruction asks the LLM to check its tests before replying. In a **new chat**, send this prompt:
+ประโยคสุดท้ายของคำสั่งขอให้ LLM ตรวจ test ของตัวเองก่อนตอบ เปิด**แชตใหม่** แล้วส่ง prompt นี้:
 
 ```text
 You are a software developer in test who is experienced in writing Java and JUnit 5. Create unit tests for the following method. Before outputting the unit tests, check that the assertion of each unit test will return a deterministic result.
