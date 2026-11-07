@@ -3,7 +3,7 @@
 🌐 **English** | [ภาษาไทย](README.th.md)
 
 Hands-on exercises for the **AI for Software Testing** lecture
-(2110724 Software Quality Assurance and Testing).
+(2110724 Software Testing and Quality Assurance).
 
 The activities follow the book *Software Testing with Generative AI* (Mark Winteringham, Manning).
 We will work through the book's activities one by one.

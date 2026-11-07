@@ -3,7 +3,7 @@
 🌐 [English](README.md) | **ภาษาไทย**
 
 แบบฝึกหัดลงมือปฏิบัติสำหรับการบรรยายเรื่อง **AI for Software Testing**
-(วิชา 2110724 Software Quality Assurance and Testing)
+(วิชา 2110724 Software Testing and Quality Assurance)
 
 กิจกรรมทั้งหมดอ้างอิงจากหนังสือ *Software Testing with Generative AI* (Mark Winteringham, Manning)
 เราจะทำกิจกรรมในหนังสือไปทีละข้อ
